@@ -25,10 +25,14 @@ addBtn.addEventListener("click", async () => {
 
   formData.append('productName',productNameEl.value)
   formData.append('productQuantity',productQuantityEl.value)
- formData.append('productUnitPrice',productQuantityEl.vlaue)
+  formData.append('productUnitPrice',productUnitPriceEl.value)
   formData.append('productCost',productCostPriceEl.value)
-  formData.append('productSellingPrice',productCostPriceEl.value)
-  formData.append('productImage',productImage)
+  formData.append('productSellingPrice',productSellingPriceEl.value)
+
+  if (productImage) {
+    formData.append('productImage', productImage);
+  }
+
   try {
     const res = await fetch("../../../server/controllers/dashboards/addProductController.php",{
         method:"POST",
