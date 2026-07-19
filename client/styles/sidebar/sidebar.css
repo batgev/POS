@@ -7,19 +7,21 @@
 
 aside{
     width: 300px;
-    background-color: rgb(24, 13, 73);
+    border-right:1px solid rgb(121, 120, 120);
     height: 100vh;
+    overflow-x: auto;
+    overflow:hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 10px 10px 0 10px;
+    padding: 0px 10px 0 10px;
    color: rgb(24, 13, 73) ;
    
    
 }
 .list{
     width: 100%;
-    margin-top: 60px;
+    margin-top: 5px;
 }
 
 nav{
@@ -29,8 +31,16 @@ nav{
   
 }
 .top-text{
-    color:white;
-    font-size: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+   margin-top:20px;
+   width: 100%;
+   background-color: white;
+}
+.top-text i{
+    font-size: 50px;
 }
 .sidebar-a{
     text-decoration: none;
@@ -43,11 +53,13 @@ nav{
     margin:5px 0;
     list-style: none;
     width: 100%;
+    cursor: pointer;
 }
 
 .sidebar-a:hover{
     transform:translateX(5px);
     transition: 0.5s ease-in-out;
+    background-color: rgb(177, 170, 170);
 }
 .logout-btn{
     margin-top: 100px;

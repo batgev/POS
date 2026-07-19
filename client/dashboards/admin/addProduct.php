@@ -14,17 +14,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Product | Point Of Sales System</title>
     <link rel="stylesheet" href="../../styles/dashboard/addProductStyles.css?v=<?= filemtime('../../styles/dashboard/addProductStyles.css')?>">
-</head>
+</head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 <body>
     <div>
         <?php include('../../components/sidebar.php')?>
     </div>
     <div class="main-container">
         <div class="back-btn" title="go back to the home page">
-            <a class="a" href="/POS/client/dashboards/admin/index.php">Home</a> /addProduct
+            <a class="a" href="/POS/client/dashboards/admin/index.php">Go Home</a> 
         </div>
 
-        <form class="add-product-form" >
+      <div class="add-product-container">
+      <form class="add-product-form" >
             <span>Add a product to your inventory</span>
             <div>
                 <label for="product-name">Product Name</label>
@@ -52,6 +53,7 @@
             </div>
             <button type="button" id="add-product-btn" class="add-product-btn">Add Product</button>
         </form>
+      </div>
     </div>
     <script src="../../js/dashboards/addProduct.js?v=<?= filemtime('../../js/dashboards/addProduct.js')?>"></script>
 </body>

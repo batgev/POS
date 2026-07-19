@@ -12,17 +12,17 @@
         
     <aside>
         <div class="top-text">
-            <i class="fa-sold fa-user"></i>
+            <i class="fa-solid fa-user-circle"></i>
             <span>Admin name</span>
         </div>
         <div class="list">
             <nav>
-                <a class="sidebar-a"> <i class="fa-solid fa-user"></i> View Products</a>
-                <a class="sidebar-a" href="../admin/addProduct.php">Add Products</a>
-                <a class="sidebar-a" >View Low Stock</a>
-                <a class="sidebar-a">View Sales</a>
-                <a class="sidebar-a">Manage Users</a>
-                <a class="sidebar-a">Profile</a>
+                <a class="sidebar-a" href="../admin/viewProducts.php"> <i class="fa-solid fa-cart-shopping"></i> View Products</a>
+                <a class="sidebar-a" href="../admin/addProduct.php"><i class="fa-solid fa-cart-shopping"></i> Add Products</a>
+                <a class="sidebar-a" href="../admin/lowStock.php"><i class="fa-solid fa-exclamation-triangle "></i> View Low Stock</a>
+                <a class="sidebar-a" href="../admin/viewSales.php"><i class="fa-solid fa-chart-bar"></i> View Sales</a>
+                <a class="sidebar-a" href="../admin/manageUsers.php"><i class="fa-solid fa-user-cog"></i> Manage Users</a>
+                <a class="sidebar-a" href="../admin/profile.php"><i class=" fa-solid fa-user-shield"></i> Profile</a>
             </nav>
         </div>
 

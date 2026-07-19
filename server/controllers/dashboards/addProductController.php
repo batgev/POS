@@ -16,22 +16,39 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit();
 }
 
+$product_id = isset($_POST['productId']) && $_POST['productId'] !== '' ? (int)$_POST['productId'] : null;
+
 $product_name = trim((string)($_POST['productName'] ?? ''));
 $product_quantity = $_POST['productQuantity'] ?? null;
 $product_unitPrice = $_POST['productUnitPrice'] ?? null;
 $product_cost = trim((string)($_POST['productCost'] ?? ''));
 $product_sellingPrice = trim((string)($_POST['productSellingPrice'] ?? ''));
 
-if ($product_name === '' || $product_quantity === null || $product_unitPrice === null || $product_cost === '' || $product_sellingPrice === '') {
-    http_response_code(400);
-    echo json_encode(['success' => false, 'message' => 'all fields are mandatory']);
-    exit();
+if ($product_id === null) {
+    if ($product_name === '' || $product_quantity === null || $product_unitPrice === null || $product_cost === '' || $product_sellingPrice === '') {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'all fields are mandatory']);
+        exit();
+    }
+} else {
+    // For update, we still require core fields
+    if ($product_name === '' || $product_quantity === null || $product_unitPrice === null || $product_cost === '' || $product_sellingPrice === '') {
+        http_response_code(400);
+        echo json_encode(['success' => false, 'message' => 'all fields are mandatory']);
+        exit();
+    }
 }
 
 $product_quantity = (int)$product_quantity;
 $product_unitPrice = (float)$product_unitPrice;
 $product_cost = (float)$product_cost;
 $product_sellingPrice = (float)$product_sellingPrice;
+
+if ($product_id !== null && $product_id <= 0) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'invalid product id']);
+    exit();
+}
 
 if ($product_quantity < 0 || $product_unitPrice < 0 || $product_cost < 0 || $product_sellingPrice < 0) {
     http_response_code(400);
@@ -41,7 +58,7 @@ if ($product_quantity < 0 || $product_unitPrice < 0 || $product_cost < 0 || $pro
 
 $uploadedImagePath = null;
 
-// Handle optional upload
+// Handle optional upload (image is optional during update; if omitted, keep existing)
 if (isset($_FILES['productImage']) && is_array($_FILES['productImage']) && ($_FILES['productImage']['name'] ?? '') !== '') {
     if ($_FILES['productImage']['error'] !== UPLOAD_ERR_OK) {
         http_response_code(400);
@@ -80,21 +97,58 @@ if (isset($_FILES['productImage']) && is_array($_FILES['productImage']) && ($_FI
 }
 
 try {
-    $stmt = $pdo->prepare(
-        "INSERT INTO products (product_name, product_quantity, product_unit_price, cost_price, selling_price, product_image) 
-         VALUES (?, ?, ?, ?, ?, ?)"
-    );
+    // If productId is present => update, otherwise insert
+    if ($product_id !== null) {
+        if ($uploadedImagePath === null) {
+            // Keep existing image
+            $stmt = $pdo->prepare(
+                "UPDATE products 
+                 SET product_name = ?, product_quantity = ?, product_unit_price = ?, cost_price = ?, selling_price = ?
+                 WHERE id = ?"
+            );
+            $stmt->execute([
+                $product_name,
+                $product_quantity,
+                $product_unitPrice,
+                $product_cost,
+                $product_sellingPrice,
+                $product_id
+            ]);
+        } else {
+            $stmt = $pdo->prepare(
+                "UPDATE products 
+                 SET product_name = ?, product_quantity = ?, product_unit_price = ?, cost_price = ?, selling_price = ?, product_image = ?
+                 WHERE id = ?"
+            );
+            $stmt->execute([
+                $product_name,
+                $product_quantity,
+                $product_unitPrice,
+                $product_cost,
+                $product_sellingPrice,
+                $uploadedImagePath,
+                $product_id
+            ]);
+        }
 
-    $stmt->execute([
-        $product_name,
-        $product_quantity,
-        $product_unitPrice,
-        $product_cost,
-        $product_sellingPrice,
-        $uploadedImagePath
-    ]);
+        echo json_encode(['success' => true, 'message' => 'Product updated successfully']);
+    } else {
+        $stmt = $pdo->prepare(
+            "INSERT INTO products (product_name, product_quantity, product_unit_price, cost_price, selling_price, product_image) 
+             VALUES (?, ?, ?, ?, ?, ?)"
+        );
 
-    echo json_encode(['success' => true, 'message' => 'Product added successfully']);
+        $stmt->execute([
+            $product_name,
+            $product_quantity,
+            $product_unitPrice,
+            $product_cost,
+            $product_sellingPrice,
+            $uploadedImagePath
+        ]);
+
+        echo json_encode(['success' => true, 'message' => 'Product added successfully']);
+    }
 } catch (Throwable $e) {
     http_response_code(500);
     echo json_encode(['success' => false, 'message' => 'server error, try again']);

@@ -1,0 +1,40 @@
+/* View Products table styling (does not change existing adminDashboard/cards UI) */
+body{
+    display: flex;
+   
+}
+.table-section{
+    width: 75vw;
+}
+.products-table{
+    width: 90%;
+    border:1px solid red;
+}
+.products-table th,
+.products-table td {
+  font-size: 14px;
+}
+.main-section{
+    padding-top: 30px;
+    
+}
+.table-section {
+  margin-top: 8px;
+  padding: 0 16px;
+}
+
+.products-table {
+  border: 1px solid #e9ecef;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.products-table thead th {
+  background: #f8f9fa;
+  color: #212529;
+}
+
+.products-table tbody tr:hover {
+  background: #fafafa;
+}
+
